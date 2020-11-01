@@ -84,15 +84,21 @@ function threejs() {
     
     
     // Ground ---------
-    let groundScale = 25;
-    const groundGeo = new THREE.PlaneGeometry(groundScale, groundScale, 1, 1);
+    // let groundScale = 25;
+    const groundGeo = new THREE.PlaneGeometry(10, 10, 1, 1);
     const groundMat = new THREE.MeshStandardMaterial({color : 0xf0ffff});
     const ground = new Physijs.BoxMesh(groundGeo, groundMat);
     ground.rotation.x += Math.PI / 2 * -1;
-    ground.position.set(0, -2, 0);
+    ground.position.set(0, -2, -2);
     ground.castShadow = true; 
     ground.receiveShadow = true;
     scene.add(ground);
+
+
+    const ground_2 = new Physijs.BoxMesh(groundGeo, groundMat);
+    ground_2.rotation.x += Math.PI / 2 * -1;
+    ground_2.position.set(0, -12, -11.8);
+    scene.add(ground_2);
 
     // Fog ---------
     const near = 0.1;
@@ -102,6 +108,9 @@ function threejs() {
     scene.background = new THREE.Color(color);
 
     let w, s, a, d;
+    let groundUp = false;
+
+
 
     //RENDER-------------------------------------------------------------------------------
     const renderScene = new function renderScene() {
@@ -164,13 +173,22 @@ function threejs() {
 
         if(heroBody.position.x > 0.5 && heroBody.position.x < 3 && heroBody.position.z < -3.5 && heroBody.position.z > -6.5){
             if(camera.position.y > 7 ){
-                camera.position.y -= 0.1;
+                // camera.position.y -= 0.1;
                 $("div.explain").css("opacity", 1);
+                groundUp = true;
             }
-        }else if(camera.position.y < 12){
-            camera.position.y += 0.1;
+        }else
+        //if(camera.position.y < 12)
+        {
+            // camera.position.y += 0.1;
             $("div.explain").css("opacity", 0);
         }
+
+        if(groundUp && ground_2.position.y < -1.9){
+            ground_2.position.y += 0.1;
+            ground_2.__dirtyPosition = true;
+        }
+
 
         scene.simulate(); 
         renderer.render(scene,camera);
