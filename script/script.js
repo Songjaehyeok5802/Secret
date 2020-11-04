@@ -7,7 +7,7 @@ function threejs() {
     var scene = new Physijs.Scene;
     scene.setGravity(new THREE.Vector3(0, -10, 0));
 
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 20 );
     var renderer = new THREE.WebGLRenderer({ alpha: true });
     document.getElementById("threejs").appendChild(renderer.domElement);
     control = new THREE.OrbitControls(camera, renderer.domElement);
@@ -37,10 +37,15 @@ function threejs() {
     scene.add( hemiLight );
 
     var heroLight = new THREE.SpotLight( 0xffffff, 1, 10, 0.5, 1, 0);
-    heroLight.position.set( 0, 5, 0);
-    heroLight.castShadow = false;  
-    heroLight.shadow.mapSize.width = 4500;
-    heroLight.shadow.mapSize.height = 4500;
+    heroLight.position.set( 0, 6, 0);
+    heroLight.castShadow = true;  
+    heroLight.receiveShadow = true;
+    heroLight.shadow.mapSize.width = 9000;
+    heroLight.shadow.mapSize.height = 9000;
+
+    // shadowCameraVisible = true;
+    // heroLight.shadow.camera = new THREE.OrthographicCamera( -100, 100, 100, -100, 0.5, 1000 ); 
+    
     scene.add( heroLight );
     
     // Hero --------
@@ -86,7 +91,7 @@ function threejs() {
     // Ground ---------
     // let groundScale = 25;
     const groundGeo = new THREE.PlaneGeometry(10, 10, 1, 1);
-    const groundMat = new THREE.MeshStandardMaterial({color : 0xf0ffff});
+    const groundMat = new THREE.MeshStandardMaterial({color : 0xffffff});
     const ground = new Physijs.BoxMesh(groundGeo, groundMat);
     ground.rotation.x += Math.PI / 2 * -1;
     ground.position.set(0, -2, -2);
@@ -95,14 +100,18 @@ function threejs() {
     scene.add(ground);
 
 
-    const ground_2 = new Physijs.BoxMesh(groundGeo, groundMat);
+    const groundGeo2 = new THREE.PlaneGeometry(20, 20, 1, 1);
+    const groundMat2 = new THREE.MeshStandardMaterial({color : 0xff0000});
+    const ground_2 = new Physijs.BoxMesh(groundGeo2, groundMat2);
     ground_2.rotation.x += Math.PI / 2 * -1;
-    ground_2.position.set(0, -12, -11.8);
+    ground_2.position.set(0, -14, 0);
+    ground_2.castShadow = true; 
+    ground_2.receiveShadow = true;
     scene.add(ground_2);
 
     // Fog ---------
     const near = 0.1;
-    const far = 40;
+    const far = 25;
     const color = 0x000000;
     scene.fog = new THREE.Fog(color, near, far);
     scene.background = new THREE.Color(color);
@@ -166,7 +175,7 @@ function threejs() {
             camera.position.z = heroBody.position.z + 8;
             camera.position.x = heroBody.position.x;
             heroLight.position.z = heroBody.position.z + 1;
-            heroLight.position.x = heroBody.position.x;
+            heroLight.position.x = heroBody.position.x + 1;
 
         };
         keyEvent();
@@ -188,7 +197,6 @@ function threejs() {
             ground_2.position.y += 0.1;
             ground_2.__dirtyPosition = true;
         }
-
 
         scene.simulate(); 
         renderer.render(scene,camera);
