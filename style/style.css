@@ -1,11 +1,30 @@
-*{margin: 0; padding: 0; }
 body{overflow: hidden; font-family: 'Nanum Myeongjo', serif;}
 
+
+
+
+
+div.intro{position: absolute; width: 100%; height: 100%; color: #fff; z-index: 3; background-color: rgb(0, 0, 0); transition: 800ms;}
+div.intro > div.explain_wrap{
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;
+}
+div.intro > div.explain_wrap > img.logo{width: 400px;}
+div.intro > div.explain_wrap > div.btn_wrap{margin: 50px 0 50px; text-align: center;}
+div.intro > div.explain_wrap > div.btn_wrap > button.start_btn{
+    width: 50px; height: 50px; background: transparent; border: 1px solid #fff;
+    border-radius: 50%; margin-bottom: 30px; transition: 800ms; outline: none; cursor: pointer;
+}
+div.intro > div.explain_wrap > div.btn_wrap > button.start_btn:hover{background-color: #fff;}
+div.intro > div.explain_wrap > div.btn_wrap > p.start_txt{}
+div.intro > div.explain_wrap > p.comment{font-size: 30px; font-weight: 800;}
+div.intro > div.explain_wrap > p.esplain_txt{margin: 50px 0 100px; font-size: 20px; line-height: 35px; font-weight: 400;}
+div.intro > div.explain_wrap > div.key_wrap{}
+div.intro > div.explain_wrap > div.key_wrap > img{margin-bottom: 25px;}
+div.intro > div.explain_wrap > div.key_wrap > p{}
 
 div.explain{
     color: #fff; position: absolute; z-index: 1; left: 50%; transform:  translateX(-50%); bottom: 10%;
     transition: 800ms; opacity: 0; pointer-events: none; font-size: 20px; text-align: center; line-height: 30px;
 }
-
 div#threejs{position: absolute; background-color: #000;}
 
