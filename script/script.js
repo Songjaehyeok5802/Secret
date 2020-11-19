@@ -1,4 +1,10 @@
 
+
+
+const  answer = $("input.answer");
+let answerTxt = "";
+let answerFocus = false;
+
 function threejs() {
 
     Physijs.scripts.worker = '../vendor/physijs_worker.js';
@@ -98,7 +104,84 @@ function threejs() {
     DeadBody2.rotation.set(1.2, 0, 2);
     scene.add(DeadBody2);
 
-    
+
+
+    // mtl 포함 obj----------------------------------------------------
+    function prosecution(){
+        var testmtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/prosecution.mtl";
+        main = new THREE.Object3D;
+
+    testmtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/prosecution.obj', 
+            function (object) {
+                main = object;
+                main.castShadow = true;
+                main.receiveShadow = true;
+                main.scale.set(2, 2, 2);
+                main.position.set(16, -2, 0);
+                main.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(main);
+        })
+    });
+    }
+
+    function police(){
+        var testmtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/police.mtl";
+        main = new THREE.Object3D;
+
+        testmtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/police.obj', 
+            function (object) {
+                main = object;
+                main.castShadow = true;
+                main.receiveShadow = true;
+                main.scale.set(3, 3, 3);
+                main.position.set(-16, -2, 0);
+                main.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(main);
+            })
+        });
+    }
+
+    function hanzo(){
+        var testmtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/hanzo.mtl";
+        main = new THREE.Object3D;
+
+    testmtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/hanzo.obj', 
+            function (object) {
+                main = object;
+                main.castShadow = true;
+                main.receiveShadow = true;
+                main.scale.set(1.5, 1.5, 1.5);
+                main.position.set(0, -2, 9);
+                main.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(main);
+        })
+    });
+    }
+
     
     // Ground ---------
     // let groundScale = 25;
@@ -142,6 +225,10 @@ function threejs() {
         groundUp_3 = false,
         speed, 
         run = false;
+        create = true;
+
+
+
     function keyEvent(){
         if(!run){
             speed = 0.05;
@@ -227,6 +314,7 @@ function threejs() {
         if(heroBody.position.x > -3.5 && heroBody.position.x < -1.2 && heroBody.position.z < -12.5 && heroBody.position.z > -15.5){
             $("div.part_2").css("opacity", 1);
             groundUp_3 = true;
+            building();
         }else{
             $("div.part_2").css("opacity", 0);
         }
@@ -235,31 +323,103 @@ function threejs() {
             ground_3.__dirtyPosition = true;
         }
     }
+    function building(){
+        if(create){
+            prosecution();
+            police();
+            hanzo();
+            create = false;
+        }
+    }
     function fall_hero(){
         if(heroBody.position.y < -10 || heroBody.rotation.x > 1 || heroBody.rotation.x < -1 || heroBody.rotation.z > 1 || heroBody.rotation.z < -1 || heroBody.rotation.y > 1 || heroBody.rotation.y < -1){
             location.reload();
         }
     }
+    function police_In(){
+        if(heroBody.position.x > -18 && heroBody.position.x < -14 && heroBody.position.z < 2 && heroBody.position.z > -0.5){
+            $("div.police").css("opacity", 1);
+        }else{
+            $("div.police").css("opacity", 0);
+        }
+    }
+    function Prosecution_In(){
+        if(heroBody.position.x > 14 && heroBody.position.x < 18 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
+            $("div.Prosecution").css("opacity", 1);
+        }else{
+            $("div.Prosecution").css("opacity", 0);
+        }
+    }
+    function hanzo_In(){
+        if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 10 && heroBody.position.z > 8){
+            $("div.hanzo").css("opacity", 1);
+        }else{
+            $("div.hanzo").css("opacity", 0);
+        }
+    }
+    function anwerTyp(){
+        answerTxt = answer.val();
+    }
+
+
 
     //RENDER-------------------------------------------------------------------------------
     const renderScene = new function renderScene() {
         requestAnimationFrame(renderScene);
 
-        keyEvent();
+        if(!answerFocus){
+            keyEvent();
+        }
         set_2();
         set_3();
         fall_hero();
+        police_In();
+        Prosecution_In();
+        hanzo_In();
+        anwerTyp();
+
+
+
+        // console.log(heroBody.position.x);
+        // console.log(heroBody.position.y);
+        // console.log(heroBody.position.z);
+
+
 
         scene.simulate(); 
         renderer.render(scene,camera);
     }   
 }
+threejs();
 
-const introPage = $("div.intro");
-const startBtn = $("button.start_btn");
+
+
+
+answer.focus(()=>{
+    answerFocus = true;
+})
+
+answer.blur(()=>{
+    answerFocus = false;
+})
+answer.keydown(key => {
+    if (key.keyCode == 13) {
+        if(answerTxt === "서동재"){
+            console.log("정답");
+        }else{
+            console.log("오답");
+        }
+    }
+});
+
+    
+
+const introPage = $("div.intro"),
+      startBtn = $("button.start_btn");
+
 
 startBtn.click(()=>{
     introPage.css({"opacity" : 0, "pointer-events" : "none"})
-    threejs();
+    // threejs();
 });
 
