@@ -182,9 +182,35 @@ function threejs() {
     });
     }
 
+    function prison(){
+        var testmtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/prison.mtl";
+        main = new THREE.Object3D;
+
+        testmtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/prison.obj', 
+            function (object) {
+                main = object;
+                main.castShadow = true;
+                main.receiveShadow = true;
+                main.scale.set(3, 3, 3);
+                main.position.set(0, -2, 0);
+                main.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(main);
+            })
+        });
+    }
+
+
     
     // Ground ---------
-    // let groundScale = 25;
+    // Set-1
     const groundGeo = new THREE.PlaneGeometry(10, 10, 1, 1);
     const ground = new Physijs.BoxMesh(groundGeo, commonMat);
     ground.rotation.x += Math.PI / 2 * -1;
@@ -193,7 +219,7 @@ function threejs() {
     ground.receiveShadow = true;
     scene.add(ground);
 
-
+    // Set-2
     const groundGeo2 = new THREE.PlaneGeometry(10, 10, 1, 1);
     const ground_2 = new Physijs.BoxMesh(groundGeo2, commonMat);
     ground_2.rotation.x += Math.PI / 2 * -1;
@@ -202,6 +228,7 @@ function threejs() {
     ground_2.receiveShadow = true;
     scene.add(ground_2);
 
+    // Set-3
     const groundGeo3 = new THREE.PlaneGeometry(45, 45, 1, 1);
     const ground_3 = new Physijs.BoxMesh(groundGeo3, commonMat);
     ground_3.rotation.x += Math.PI / 2 * -1;
@@ -224,10 +251,12 @@ function threejs() {
         groundUp_2 = false,
         groundUp_3 = false,
         speed, 
-        run = false;
+        run = false,
         create = true;
-
-
+        set3 = false;
+        count_pol = false,
+        count_pro = false,
+        count_han = false;
 
     function keyEvent(){
         if(!run){
@@ -306,7 +335,7 @@ function threejs() {
             $("div.part_1").css("opacity", 0);
         }
         if(groundUp_2 && ground_2.position.y < -1.9){
-            ground_2.position.y += 0.06;
+            ground_2.position.y += 0.08;
             ground_2.__dirtyPosition = true;
         }
     }
@@ -328,7 +357,9 @@ function threejs() {
             prosecution();
             police();
             hanzo();
+            prison();
             create = false;
+            set3 = true;
         }
     }
     function fall_hero(){
@@ -339,6 +370,7 @@ function threejs() {
     function police_In(){
         if(heroBody.position.x > -18 && heroBody.position.x < -14 && heroBody.position.z < 2 && heroBody.position.z > -0.5){
             $("div.police").css("opacity", 1);
+            count_pol = true;
         }else{
             $("div.police").css("opacity", 0);
         }
@@ -346,6 +378,7 @@ function threejs() {
     function Prosecution_In(){
         if(heroBody.position.x > 14 && heroBody.position.x < 18 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
             $("div.Prosecution").css("opacity", 1);
+            count_pro = true;
         }else{
             $("div.Prosecution").css("opacity", 0);
         }
@@ -353,13 +386,30 @@ function threejs() {
     function hanzo_In(){
         if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 10 && heroBody.position.z > 8){
             $("div.hanzo").css("opacity", 1);
+            count_han = true;
         }else{
             $("div.hanzo").css("opacity", 0);
+        }
+    }
+    function prison_In(){
+        if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
+            $("div.part_3").css("opacity", 1);
+        }else{
+            $("div.part_3").css("opacity", 0);
+        }
+    }
+    function prison_Answer_In(){
+        if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
+            answer.css({"opacity" : 1, "pointer-events" : "all"});
+        }else{
+            answer.css({"opacity" : 0, "pointer-events" : "none"});
         }
     }
     function anwerTyp(){
         answerTxt = answer.val();
     }
+
+
 
 
 
@@ -370,15 +420,20 @@ function threejs() {
         if(!answerFocus){
             keyEvent();
         }
+        fall_hero();
         set_2();
         set_3();
-        fall_hero();
-        police_In();
-        Prosecution_In();
-        hanzo_In();
+        if(set3){
+            police_In();
+            Prosecution_In();
+            hanzo_In();
+            if(count_pol && count_pro && count_han){
+                prison_Answer_In();
+            }else{
+                prison_In();
+            }
+        }
         anwerTyp();
-
-
 
         // console.log(heroBody.position.x);
         // console.log(heroBody.position.y);
@@ -398,7 +453,6 @@ threejs();
 answer.focus(()=>{
     answerFocus = true;
 })
-
 answer.blur(()=>{
     answerFocus = false;
 })
@@ -408,11 +462,13 @@ answer.keydown(key => {
             console.log("정답");
         }else{
             console.log("오답");
+            answer.addClass("wrong");
+            setInterval(()=>{
+                answer.removeClass("wrong");
+            }, 700)
         }
     }
 });
-
-    
 
 const introPage = $("div.intro"),
       startBtn = $("button.start_btn");
