@@ -108,11 +108,11 @@ function threejs() {
 
     // mtl 포함 obj----------------------------------------------------
     function prosecution(){
-        var testmtl =  new THREE.MTLLoader(),
+        var pro_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/prosecution.mtl";
-        main = new THREE.Object3D;
+        pro_3D = new THREE.Object3D;
 
-    testmtl.load(mtl_Src, function (materials){
+    pro_mtl.load(mtl_Src, function (materials){
         materials.preload();
 
         var testobj = new THREE.OBJLoader();
@@ -121,23 +121,23 @@ function threejs() {
         
         testobj.load('../fbx/prosecution.obj', 
             function (object) {
-                main = object;
-                main.castShadow = true;
-                main.receiveShadow = true;
-                main.scale.set(2, 2, 2);
-                main.position.set(16, -2, 0);
-                main.rotation.set(0, Math.PI / 2 * -1, 0);
-                scene.add(main);
+                pro_3D = object;
+                pro_3D.castShadow = true;
+                pro_3D.receiveShadow = true;
+                pro_3D.scale.set(2, 2, 2);
+                pro_3D.position.set(16, -2, 0);
+                pro_3D.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(pro_3D);
         })
     });
     }
 
     function police(){
-        var testmtl =  new THREE.MTLLoader(),
+        var police_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/police.mtl";
-        main = new THREE.Object3D;
+        police_3D = new THREE.Object3D;
 
-        testmtl.load(mtl_Src, function (materials){
+        police_mtl.load(mtl_Src, function (materials){
         materials.preload();
 
         var testobj = new THREE.OBJLoader();
@@ -146,23 +146,23 @@ function threejs() {
         
         testobj.load('../fbx/police.obj', 
             function (object) {
-                main = object;
-                main.castShadow = true;
-                main.receiveShadow = true;
-                main.scale.set(3, 3, 3);
-                main.position.set(-16, -2, 0);
-                main.rotation.set(0, Math.PI / 2 * -1, 0);
-                scene.add(main);
+                police_3D = object;
+                police_3D.castShadow = true;
+                police_3D.receiveShadow = true;
+                police_3D.scale.set(3, 3, 3);
+                police_3D.position.set(-16, -2, 0);
+                police_3D.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(police_3D);
             })
         });
     }
 
     function hanzo(){
-        var testmtl =  new THREE.MTLLoader(),
+        var han_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/hanzo.mtl";
-        main = new THREE.Object3D;
+        han_3D = new THREE.Object3D;
 
-    testmtl.load(mtl_Src, function (materials){
+    han_mtl.load(mtl_Src, function (materials){
         materials.preload();
 
         var testobj = new THREE.OBJLoader();
@@ -171,23 +171,23 @@ function threejs() {
         
         testobj.load('../fbx/hanzo.obj', 
             function (object) {
-                main = object;
-                main.castShadow = true;
-                main.receiveShadow = true;
-                main.scale.set(1.5, 1.5, 1.5);
-                main.position.set(0, -2, 9);
-                main.rotation.set(0, Math.PI / 2 * -1, 0);
-                scene.add(main);
+                han_3D = object;
+                han_3D.castShadow = true;
+                han_3D.receiveShadow = true;
+                han_3D.scale.set(1.5, 1.5, 1.5);
+                han_3D.position.set(0, -2, 9);
+                han_3D.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(han_3D);
         })
     });
     }
 
     function prison(){
-        var testmtl =  new THREE.MTLLoader(),
+        var pri_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/prison.mtl";
-        main = new THREE.Object3D;
+        pri_3D = new THREE.Object3D;
 
-        testmtl.load(mtl_Src, function (materials){
+        pri_mtl.load(mtl_Src, function (materials){
         materials.preload();
 
         var testobj = new THREE.OBJLoader();
@@ -196,16 +196,42 @@ function threejs() {
         
         testobj.load('../fbx/prison.obj', 
             function (object) {
-                main = object;
-                main.castShadow = true;
-                main.receiveShadow = true;
-                main.scale.set(3, 3, 3);
-                main.position.set(0, -2, 0);
-                main.rotation.set(0, Math.PI / 2 * -1, 0);
-                scene.add(main);
+                pri_3D = object;
+                pri_3D.castShadow = true;
+                pri_3D.receiveShadow = true;
+                pri_3D.scale.set(3, 3, 3);
+                pri_3D.position.set(0, -1.8, 0);
+                pri_3D.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(pri_3D);
             })
         });
     }
+    
+    function car(){
+        var car_mtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/car.mtl";
+        car_3D = new THREE.Object3D;
+
+        car_mtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/car.obj', 
+            function (object) {
+                car_3D = object;
+                car_3D.castShadow = true;
+                car_3D.receiveShadow = true;
+                car_3D.scale.set(2, 2, 2);
+                car_3D.position.set(11.5, -2, -11.5);
+                car_3D.rotation.set(0, Math.PI / 2 * -1.5, 0);
+                scene.add(car_3D);
+            })
+        });
+    }
+
 
 
     
@@ -358,6 +384,7 @@ function threejs() {
             police();
             hanzo();
             prison();
+            car();
             create = false;
             set3 = true;
         }
@@ -389,6 +416,13 @@ function threejs() {
             count_han = true;
         }else{
             $("div.hanzo").css("opacity", 0);
+        }
+    }
+    function car_In(){
+        if(heroBody.position.x > 9.5 && heroBody.position.x < 14 && heroBody.position.z < -10 && heroBody.position.z > -13){
+            $("div.part_3_car").css("opacity", 1);
+        }else{
+            $("div.part_3_car").css("opacity", 0);
         }
     }
     function prison_In(){
@@ -427,6 +461,7 @@ function threejs() {
             police_In();
             Prosecution_In();
             hanzo_In();
+            car_In();
             if(count_pol && count_pro && count_han){
                 prison_Answer_In();
             }else{
