@@ -48,8 +48,16 @@ function threejs() {
     heroLight.receiveShadow = true;
     heroLight.shadow.mapSize.width = 9000;
     heroLight.shadow.mapSize.height = 9000;
-    
     scene.add( heroLight );
+
+    var lampLight = new THREE.SpotLight( 0xff0000, 0, 20, 0.8, 1, 0);
+    lampLight.position.set( 0, 4, 0);
+    lampLight.castShadow = true;  
+    lampLight.receiveShadow = true;
+    lampLight.shadow.mapSize.width = 9000;
+    lampLight.shadow.mapSize.height = 9000;
+    scene.add( lampLight );
+    
     
     // common Mat
     const commonMat = new THREE.MeshStandardMaterial({color: 0xffffff});
@@ -105,14 +113,13 @@ function threejs() {
     scene.add(DeadBody2);
 
 
-
     // mtl 포함 obj----------------------------------------------------
     function prosecution(){
         var pro_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/prosecution.mtl";
         pro_3D = new THREE.Object3D;
 
-    pro_mtl.load(mtl_Src, function (materials){
+        pro_mtl.load(mtl_Src, function (materials){
         materials.preload();
 
         var testobj = new THREE.OBJLoader();
@@ -232,10 +239,67 @@ function threejs() {
         });
     }
 
+    function npc(){
+        let x = -17,
+            z = -17;
+
+        const npcGeo_hat_deco = new THREE.OctahedronGeometry(0.2,1);
+        const npcHat_Deco = new THREE.Mesh(npcGeo_hat_deco, commonMat);
+        npcHat_Deco.position.set(x, 2, z);
+        npcHat_Deco.castShadow = true;
+        npcHat_Deco.receiveShadow = true;
+        scene.add(npcHat_Deco);
+
+        const npcGeo_hat = new THREE.ConeGeometry(0.5, 1.5, 30);
+        const npcHat = new THREE.Mesh(npcGeo_hat, commonMat);
+        npcHat.position.set(x, 1, z);
+        npcHat.castShadow = true;
+        npcHat.receiveShadow = true;
+        scene.add(npcHat);
+
+        const npcGeo = new THREE.SphereGeometry(0.5, 30, 30);
+        const npcHead = new THREE.Mesh(npcGeo, commonMat);
+        npcHead.position.set(x, 0, z);
+        npcHead.castShadow = true;
+        npcHead.receiveShadow = true;
+        scene.add(npcHead);
+    
+        const npcGeo_body = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
+        const npcBody = new THREE.Mesh(npcGeo_body, commonMat);
+        npcBody.castShadow = true;
+        npcBody.receiveShadow = true;
+        npcBody.position.set(x, -1, z);
+        scene.add(npcBody);
+    }
+
+    function lamp(){
+        var lamp_mtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/lamp.mtl";
+        lamp_3D = new THREE.Object3D;
+
+        lamp_mtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/lamp.obj', 
+            function (object) {
+                lamp_3D = object;
+                lamp_3D.castShadow = true;
+                lamp_3D.receiveShadow = true;
+                lamp_3D.scale.set(9, 9, 9);
+                lamp_3D.position.set(0, -1.8, 0);
+                lamp_3D.rotation.set(0, Math.PI / 2 * -1, 0);
+                scene.add(lamp_3D);
+            })
+        });
+    }
 
 
     
-    // Ground ---------
+
     // Set-1
     const groundGeo = new THREE.PlaneGeometry(10, 10, 1, 1);
     const ground = new Physijs.BoxMesh(groundGeo, commonMat);
@@ -266,7 +330,7 @@ function threejs() {
 
     // Fog ---------
     const near = 0.1;
-    const far = 25;
+    const far = 25; // 18
     const color = 0x000000;
     scene.fog = new THREE.Fog(color, near, far);
     scene.background = new THREE.Color(color);
@@ -278,17 +342,19 @@ function threejs() {
         groundUp_3 = false,
         speed, 
         run = false,
-        create = true;
-        set3 = false;
+        create = true,
+        set3 = false,
+        isLamp = false;
         count_pol = false,
         count_pro = false,
         count_han = false;
+        
 
     function keyEvent(){
         if(!run){
-            speed = 0.05;
-        }else{
             speed = 0.1;
+        }else{
+            speed = 0.2;
         }
         document.addEventListener("keydown", onKeyDown);
         document.addEventListener("keyup", onKeyUp);
@@ -384,7 +450,9 @@ function threejs() {
             police();
             hanzo();
             prison();
+            lamp();
             car();
+            npc();
             create = false;
             set3 = true;
         }
@@ -425,11 +493,24 @@ function threejs() {
             $("div.part_3_car").css("opacity", 0);
         }
     }
+    function npc_In(){
+        if(heroBody.position.x > -18 && heroBody.position.x < -16 && heroBody.position.z < -16 && heroBody.position.z > -17.5){
+            $("div.part_3_npc").css("opacity", 1);
+        }else{
+            $("div.part_3_npc").css("opacity", 0);
+        }
+    }
     function prison_In(){
         if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
             $("div.part_3").css("opacity", 1);
+            if(lampLight.intensity < 1.5){
+                lampLight.intensity += 0.1;
+            }
         }else{
             $("div.part_3").css("opacity", 0);
+            if(lampLight.intensity > 0){
+                lampLight.intensity -= 0.1;
+            }
         }
     }
     function prison_Answer_In(){
@@ -450,7 +531,6 @@ function threejs() {
     //RENDER-------------------------------------------------------------------------------
     const renderScene = new function renderScene() {
         requestAnimationFrame(renderScene);
-
         if(!answerFocus){
             keyEvent();
         }
@@ -462,6 +542,7 @@ function threejs() {
             Prosecution_In();
             hanzo_In();
             car_In();
+            npc_In();
             if(count_pol && count_pro && count_han){
                 prison_Answer_In();
             }else{
