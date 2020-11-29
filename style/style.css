@@ -2,9 +2,8 @@ body{overflow: hidden; font-family: 'Nanum Myeongjo', serif;}
 
 
 
-
-
 div.intro{position: absolute; width: 100%; height: 100%; color: #fff; z-index: 3; background-color: rgb(0, 0, 0); transition: 800ms;
+    /* opacity: 1; pointer-events: all; */
     opacity: 0; pointer-events: none;
 }
 div.intro > div.explain_wrap{
@@ -19,21 +18,38 @@ div.intro > div.explain_wrap > div.btn_wrap > button.start_btn{
 div.intro > div.explain_wrap > div.btn_wrap > button.start_btn:hover{background-color: #fff;}
 div.intro > div.explain_wrap > div.btn_wrap > p.start_txt{}
 div.intro > div.explain_wrap > p.comment{font-size: 30px; font-weight: 800;}
-div.intro > div.explain_wrap > p.esplain_txt{margin: 50px 0 100px; font-size: 20px; line-height: 35px; font-weight: 400;}
+div.intro > div.explain_wrap > p.explain_txt{margin: 50px 0 100px; font-size: 20px; line-height: 35px; font-weight: 400;}
 div.intro > div.explain_wrap > div.key_wrap{}
 div.intro > div.explain_wrap > div.key_wrap > img{margin-bottom: 25px;}
 div.intro > div.explain_wrap > div.key_wrap > p{}
 
 div.explain{
     color: #fff; position: absolute; z-index: 1; left: 50%; transform:  translateX(-50%); bottom: 10%;
-    transition: 800ms; opacity: 0; pointer-events: none; font-size: 20px; text-align: center; line-height: 30px;
+    transition: 800ms; opacity: 0; pointer-events: none; font-size: 20px; text-align: center; line-height: 35px;
 }
+div.explain_Fianl{
+    color: #fff; position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    transition: 800ms; opacity: 0; pointer-events: none; font-size: 20px; text-align: center; line-height: 35px;
+}
+div.deadTxt{
+    animation: deadTxt 5s linear forwards;
+}
+@keyframes deadTxt{
+    0%{opacity: 0;}
+    30%{opacity: 1;}
+    70%{opacity: 1;}
+    100%{opacity: 0;}
+}
+
+
 
 /* Answer */
 input.answer{
     position: absolute; color: #fff; border: none; border-bottom: 1px solid #fff; outline: none; z-index: 5; background: transparent;
     left: 50%; transform: translateX(-50%); bottom: 10%; width: 200px; height: 40px; text-align: center; font-size: 20px;
-    opacity: 0; pointer-events: none; transition: 800ms;
+    /* opacity: 1; pointer-events: all;  */
+    opacity: 0; pointer-events: none; 
+    transition: 800ms;
 }
 input.wrong{animation: wrongAni 500ms linear forwards;}
 @keyframes wrongAni{
