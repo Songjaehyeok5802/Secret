@@ -13,7 +13,7 @@ scene.setGravity(new THREE.Vector3(0, -10, 0));
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 20 );
 var renderer = new THREE.WebGLRenderer({ alpha: true });
 document.getElementById("threejs").appendChild(renderer.domElement);
-// control = new THREE.OrbitControls(camera, renderer.domElement);
+control = new THREE.OrbitControls(camera, renderer.domElement);
 
 //SIZE ---------
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -54,6 +54,7 @@ lampLight.receiveShadow = true;
 lampLight.shadow.mapSize.width = 9000;
 lampLight.shadow.mapSize.height = 9000;
 scene.add( lampLight );
+
 
 
 // common Mat
@@ -108,6 +109,15 @@ DeadBody2.receiveShadow = true;
 DeadBody2.position.set(-2, -1.5, -13);
 DeadBody2.rotation.set(1.2, 0, 2);
 scene.add(DeadBody2);
+
+var deadLight = new THREE.SpotLight( 0xffffff, 0, 20, 0.8, 1, 0);
+deadLight.position.set( 1.3, 4, -4.5);
+deadLight.target = DeadBody;
+deadLight.castShadow = true;
+deadLight.receiveShadow = true;
+deadLight.shadow.mapSize.width = 9000;
+deadLight.shadow.mapSize.height = 9000;
+scene.add(deadLight);
 
 
 // mtl 포함 obj----------------------------------------------------
@@ -384,7 +394,7 @@ let w, s, a, d,
     count_han = false,
     isFailDead = false,
     isFailCatch = false,
-    isSuccexx = false,
+    isSuccess = false,
     isFinal = false;
     
 
@@ -587,8 +597,8 @@ function anwerTyp(){
     answerTxt = answer.val();
 }
 function Fail_Dead(){
-    isFailDead = true;
     isFinal = true;
+    isFailDead = true;
 }
 
 // POSTPROCESSING
@@ -608,7 +618,7 @@ composer.addPass(effectPass);
 const renderScene = new function renderScene() {
     requestAnimationFrame(renderScene);
 
-    if(!isFailDead){
+    if(!isFinal){
         if(!answerFocus){
             keyEvent();
         }
@@ -630,23 +640,45 @@ const renderScene = new function renderScene() {
             }
         }
         anwerTyp();
-    }else{
+    }else if(isFailDead){
         $("div.Fail_Dead").addClass("deadTxt");
         setTimeout(()=>{
             location.reload();
         }, 6000)
+    }else if(isSuccess){
+        if(camera.position.x < 1.4){
+            camera.position.x += 0.1;
+        }
+        if(camera.position.y > 2){
+            camera.position.y -= 0.1;
+        }
+        if(camera.position.z > -2.1){
+            camera.position.z -= 0.1;
+        }
+        if(lampLight.intensity > 0){
+            lampLight.intensity -= 0.1;
+        }
+        if(heroLight.intensity > 0){
+            heroLight.intensity -= 0.05;
+        }
+        if(deadLight.intensity < 0.7){
+            deadLight.intensity += 0.1;
+        }
     }
 
     if(isFinal){
-        hemiLight.intensity -= 0.01;
-        heroLight.intensity -= 0.01;
-        lampLight.intensity -= 0.01;
+        if(!isSuccess){
+            hemiLight.intensity -= 0.01;
+            heroLight.intensity -= 0.01;
+            lampLight.intensity -= 0.01;
+        }
     }
-
-
-    // console.log(heroBody.position.x);
-    // console.log(heroBody.position.y);
-    // console.log(heroBody.position.z);
+    // console.log(camera.position.x);
+    // console.log(camera.position.y);
+    // console.log(camera.position.z);
+    console.log(heroBody.position.x);
+    console.log(heroBody.position.y);
+    console.log(heroBody.position.z);
 
 
 
@@ -664,6 +696,7 @@ answer.blur(()=>{
 answer.keyup(key => {
     if (key.keyCode == 13) {
         if(answerTxt === "서동재"){
+            isSuccess = true;
             isFinal = true;
         }else if(answerTxt === "황시목" || answerTxt === "이연재" || answerTxt === "이창준" || answerTxt === "장건" || answerTxt === "한여진"){
             isFinal = true;
