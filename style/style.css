@@ -31,12 +31,15 @@ div.explain_Fianl{
     color: #fff; position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%);
     transition: 800ms; opacity: 0; pointer-events: none; font-size: 20px; text-align: center; line-height: 35px;
 }
-div.deadTxt{
+div.finalTxt{
     animation: deadTxt 5s linear forwards;
+}
+div.finalTxt_suc{
+    animation: deadTxt 8s linear forwards;
 }
 @keyframes deadTxt{
     0%{opacity: 0;}
-    30%{opacity: 1;}
+    10%{opacity: 1;}
     70%{opacity: 1;}
     100%{opacity: 0;}
 }
@@ -47,8 +50,8 @@ div.deadTxt{
 input.answer{
     position: absolute; color: #fff; border: none; border-bottom: 1px solid #fff; outline: none; z-index: 5; background: transparent;
     left: 50%; transform: translateX(-50%); bottom: 10%; width: 200px; height: 40px; text-align: center; font-size: 20px;
-    /* opacity: 1; pointer-events: all;  */
-    opacity: 0; pointer-events: none; 
+    opacity: 1; pointer-events: all; 
+    /* opacity: 0; pointer-events: none;  */
     transition: 800ms;
 }
 input.wrong{animation: wrongAni 500ms linear forwards;}
