@@ -14,7 +14,7 @@ function game(){
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 20 );
     var renderer = new THREE.WebGLRenderer({ alpha: true });
     document.getElementById("threejs").appendChild(renderer.domElement);
-    control = new THREE.OrbitControls(camera, renderer.domElement);
+    // control = new THREE.OrbitControls(camera, renderer.domElement);
 
     //SIZE ---------
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -59,18 +59,21 @@ function game(){
 
 
     // common Mat
-    const commonMat = new THREE.MeshStandardMaterial({color: 0xffffff});
+    const whiteMat = new THREE.MeshStandardMaterial({color: 0xffffff});
+    const redMat = new THREE.MeshStandardMaterial({color: 0xff6767});
+    const orangeMat = new THREE.MeshStandardMaterial({color: 0xffc067});
+    const greyMat = new THREE.MeshStandardMaterial({color: 0x7a7a7a});
 
     // Hero --------
     const heroHeadGeo = new THREE.SphereGeometry(0.5, 30, 30);
-    const heroHead = new THREE.Mesh(heroHeadGeo, commonMat);
+    const heroHead = new THREE.Mesh(heroHeadGeo, whiteMat);
     heroHead.position.set(0, 0.5, 0);
     heroHead.castShadow = true;
     heroHead.receiveShadow = true;
     scene.add(heroHead);
 
     const heroBodyGeo = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-    const heroBody = new Physijs.BoxMesh(heroBodyGeo, commonMat);
+    const heroBody = new Physijs.BoxMesh(heroBodyGeo, whiteMat);
     heroBody.castShadow = true;
     heroBody.receiveShadow = true;
     heroBody.position.set(0, 2, 0);
@@ -81,14 +84,14 @@ function game(){
 
     // First Dead --------
     const DeadHeadGeo = new THREE.SphereGeometry(0.5, 15, 30);
-    const DeadHead = new THREE.Mesh(DeadHeadGeo, commonMat);
+    const DeadHead = new THREE.Mesh(DeadHeadGeo, greyMat);
     DeadHead.position.set(1, -1.5, -4);
     DeadHead.castShadow = true;
     DeadHead.receiveShadow = true;
     scene.add(DeadHead);
 
     const DeadBodyGeo = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-    const DeadBody = new THREE.Mesh(DeadBodyGeo, commonMat);
+    const DeadBody = new THREE.Mesh(DeadBodyGeo, greyMat);
     DeadBody.castShadow = true;
     DeadBody.receiveShadow = true;
     DeadBody.position.set(2, -1.5, -5);
@@ -97,14 +100,14 @@ function game(){
 
     // Second Dead --------
     const DeadHeadGeo2 = new THREE.SphereGeometry(0.5, 15, 30);
-    const DeadHead2 = new THREE.Mesh(DeadHeadGeo2, commonMat);
+    const DeadHead2 = new THREE.Mesh(DeadHeadGeo2, greyMat);
     DeadHead2.position.set(-3, -1.5, -15);
     DeadHead2.castShadow = true;
     DeadHead2.receiveShadow = true;
     scene.add(DeadHead2);
 
     const DeadBodyGeo2 = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-    const DeadBody2 = new THREE.Mesh(DeadBodyGeo2, commonMat);
+    const DeadBody2 = new THREE.Mesh(DeadBodyGeo2, greyMat);
     DeadBody2.castShadow = true;
     DeadBody2.receiveShadow = true;
     DeadBody2.position.set(-2, -1.5, -13);
@@ -112,7 +115,7 @@ function game(){
     scene.add(DeadBody2);
 
     const soulGeo = new THREE.OctahedronGeometry(0.5, 1);
-    const soul = new THREE.Mesh(soulGeo, commonMat);
+    const soul = new THREE.Mesh(soulGeo, whiteMat);
     soul.position.set(1.5, -3, -5);
     scene.add(soul);
 
@@ -291,28 +294,28 @@ function game(){
             z = -17;
 
         const npcGeo_hat_deco = new THREE.OctahedronGeometry(0.2,1);
-        const npcHat_Deco = new THREE.Mesh(npcGeo_hat_deco, commonMat);
+        const npcHat_Deco = new THREE.Mesh(npcGeo_hat_deco, redMat);
         npcHat_Deco.position.set(x, 2, z);
         npcHat_Deco.castShadow = true;
         npcHat_Deco.receiveShadow = true;
         scene.add(npcHat_Deco);
 
         const npcGeo_hat = new THREE.ConeGeometry(0.5, 1.5, 30);
-        const npcHat = new THREE.Mesh(npcGeo_hat, commonMat);
+        const npcHat = new THREE.Mesh(npcGeo_hat, orangeMat);
         npcHat.position.set(x, 1, z);
         npcHat.castShadow = true;
         npcHat.receiveShadow = true;
         scene.add(npcHat);
 
         const npcGeo = new THREE.SphereGeometry(0.5, 30, 30);
-        const npcHead = new THREE.Mesh(npcGeo, commonMat);
+        const npcHead = new THREE.Mesh(npcGeo, whiteMat);
         npcHead.position.set(x, 0, z);
         npcHead.castShadow = true;
         npcHead.receiveShadow = true;
         scene.add(npcHead);
 
         const npcGeo_body = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-        const npcBody = new THREE.Mesh(npcGeo_body, commonMat);
+        const npcBody = new THREE.Mesh(npcGeo_body, whiteMat);
         npcBody.castShadow = true;
         npcBody.receiveShadow = true;
         npcBody.position.set(x, -1, z);
@@ -324,14 +327,14 @@ function game(){
             z = 5;
 
         const npcGeo = new THREE.SphereGeometry(0.4, 30, 30);
-        const npcHead = new THREE.Mesh(npcGeo, commonMat);
+        const npcHead = new THREE.Mesh(npcGeo, whiteMat);
         npcHead.position.set(x, 0, z);
         npcHead.castShadow = true;
         npcHead.receiveShadow = true;
         scene.add(npcHead);
 
         const npcGeo_body = new THREE.CylinderBufferGeometry(0.2, 0.5, 2, 20);
-        const npcBody = new THREE.Mesh(npcGeo_body, commonMat);
+        const npcBody = new THREE.Mesh(npcGeo_body, whiteMat);
         npcBody.castShadow = true;
         npcBody.receiveShadow = true;
         npcBody.position.set(x, -1, z);
@@ -343,14 +346,14 @@ function game(){
             z = 9;
 
         const npcGeo = new THREE.SphereGeometry(0.5, 30, 30);
-        const npcHead = new THREE.Mesh(npcGeo, commonMat);
+        const npcHead = new THREE.Mesh(npcGeo, whiteMat);
         npcHead.position.set(x, 0, z);
         npcHead.castShadow = true;
         npcHead.receiveShadow = true;
         scene.add(npcHead);
 
         const npcGeo_body = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-        const npcBody = new THREE.Mesh(npcGeo_body, commonMat);
+        const npcBody = new THREE.Mesh(npcGeo_body, whiteMat);
         npcBody.castShadow = true;
         npcBody.receiveShadow = true;
         npcBody.position.set(x, -1, z);
@@ -387,7 +390,7 @@ function game(){
 
     // Set-1
     const groundGeo = new THREE.PlaneGeometry(10, 10, 1, 1);
-    const ground = new Physijs.BoxMesh(groundGeo, commonMat);
+    const ground = new Physijs.BoxMesh(groundGeo, greyMat);
     ground.rotation.x += Math.PI / 2 * -1;
     ground.position.set(0, -2, -2);
     ground.castShadow = true; 
@@ -396,7 +399,7 @@ function game(){
 
     // Set-2
     const groundGeo2 = new THREE.PlaneGeometry(10, 10, 1, 1);
-    const ground_2 = new Physijs.BoxMesh(groundGeo2, commonMat);
+    const ground_2 = new Physijs.BoxMesh(groundGeo2, greyMat);
     ground_2.rotation.x += Math.PI / 2 * -1;
     ground_2.position.set(0, -14, -11);
     ground_2.castShadow = true; 
@@ -405,7 +408,7 @@ function game(){
 
     // Set-3
     const groundGeo3 = new THREE.PlaneGeometry(45, 45, 1, 1);
-    const ground_3 = new Physijs.BoxMesh(groundGeo3, commonMat);
+    const ground_3 = new Physijs.BoxMesh(groundGeo3, greyMat);
     ground_3.rotation.x += Math.PI / 2 * -1;
     ground_3.position.set(0, -14, -8);
     ground_3.castShadow = true; 
@@ -429,13 +432,14 @@ function game(){
         run = false,
         create = true,
         set3 = false,
-        count_pol = true, //false
-        count_pro = true,
-        count_han = true,
+        count_pol = false,
+        count_pro = false,
+        count_han = false,
         isFailDead = false,
         isFailCatch = false,
         isSuccess = false,
         isFinal = false,
+        isFinalTxt = false,
         success_Txt = false;
         particle_group = [],
         par_x = [],
@@ -444,6 +448,11 @@ function game(){
         particle_Time = false;
 
     function keyEvent(){
+        if(!run){
+            speed = 0.1;
+        }else{
+            speed = 0.2;
+        }
         if(w){
                 heroBody.position.z -= speed;
                 heroBody.__dirtyPosition = true;
@@ -480,7 +489,7 @@ function game(){
             $("div.part_1").css("opacity", 0);
         }
         if(groundUp_2 && ground_2.position.y < -2.0){
-            ground_2.position.y += 0.08;
+            ground_2.position.y += 0.1;
             ground_2.__dirtyPosition = true;
         }
     }
@@ -493,7 +502,7 @@ function game(){
             $("div.part_2").css("opacity", 0);
         }
         if(groundUp_3 && ground_3.position.y < -1.9){
-            ground_3.position.y += 0.06;
+            ground_3.position.y += 0.1;
             ground_3.__dirtyPosition = true;
         }
     }
@@ -611,7 +620,7 @@ function game(){
     function particle_start(){
         const particleGeo = new THREE.SphereGeometry(0.1, 10, 10);
         for(let i = 0 ; i < 1000 ; i++){
-            const particle = new THREE.Mesh(particleGeo, commonMat);
+            const particle = new THREE.Mesh(particleGeo, whiteMat);
             particle.position.x = 1.5 + (Math.random() - Math.random());
             particle.position.y = 8 + (Math.random() - Math.random());
             particle.position.z = -5 + (Math.random() - Math.random());
@@ -622,7 +631,18 @@ function game(){
             scene.add(particle);
         }
     }
-
+    function Final_Txt(){
+        $("div.Fianl_Group").children().eq(0).addClass("Final_Thank");
+        setTimeout(()=>{
+            $("div.Fianl_Group").children().eq(1).addClass("Final_Thank");
+        }, 4000);
+        setTimeout(()=>{
+            $("div.Fianl_Group").children().eq(2).css({"opacity" : 1});
+        }, 7600);
+        setTimeout(()=>{
+            location.reload();
+        }, 10000);
+    }
     // POSTPROCESSING
     let composer;
     composer = new POSTPROCESSING.EffectComposer(renderer);
@@ -643,9 +663,6 @@ function game(){
     //RENDER-------------------------------------------------------------------------------
     const renderScene = new function renderScene() {
         requestAnimationFrame(renderScene);
-        
-
-
         if(!isFinal){
             if(!answerFocus){
                 keyEvent();
@@ -674,7 +691,6 @@ function game(){
                 location.reload();
             }, 6000)
         }else if(isSuccess){
-            console.log(soul.position.y);
             for(let i = 0 ; i < particle_group.length ; i++){
                 particle_group[i].position.x += par_x[i];
                 particle_group[i].position.y += par_y[i];
@@ -695,7 +711,7 @@ function game(){
                 soulLight_left.intensity +=0.01;
                 soulLight_right.intensity +=0.01;
             }
-            soul.position.y += 0.01;
+            soul.position.y += 0.015;
             answer.css({"opacity" : 0, "pointer-events" : "none"});
             if(camera.position.x < 1.4){
                 camera.position.x += 0.1;
@@ -719,17 +735,22 @@ function game(){
             if(deadLight.intensity < 0.7){
                 deadLight.intensity += 0.1;
             }
-            
-            if(soul.position.y > 8 && !particle_Time){
+            if(soul.position.y > 5 && !particle_Time){
                 hemiLight.intensity = 1;
                 particle_start();
                 scene.remove(soul);
                 particle_Time = true;
+                if(!isFinalTxt){
+                    Final_Txt();
+                    isFinalTxt = true;
+                }        
             }
 
             if(soul.position.y > 1.5 && !success_Txt){
-                $("div.Success_Catch").addClass("finalTxt_suc");
+                $("div.Success_Catch").css({"opacity" : 1});
                 success_Txt = true;
+            }else if(soul.position.y > 4){
+                $("div.Success_Catch").css({"opacity" : 0});
             }
         }
         if(isFinal){
@@ -747,20 +768,10 @@ function game(){
         // console.log(heroBody.position.x);
         // console.log(heroBody.position.y);
         // console.log(heroBody.position.z);
-
-
-
-
         scene.simulate(); 
         composer.render();
-        // renderer.render(scene,camera);
-    }   
-
-    if(!run){
-        speed = 0.1;
-    }else{
-        speed = 0.2;
     }
+
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
     function onKeyDown(event) {
@@ -802,7 +813,7 @@ function game(){
     })
     answer.keyup(key => {
         if (key.keyCode == 13) {
-            if(answerTxt === "서동재" || answerTxt === "qwe" || answerTxt === "ㅂㅈㄷ" || answerTxt === "진솔"){
+            if(answerTxt === "서동재" || answerTxt === "qwe" || answerTxt === "ㅂㅈㄷ"){
                 isSuccess = true;
                 isFinal = true;
             }else if(answerTxt === "황시목" || answerTxt === "이연재" || answerTxt === "이창준" || answerTxt === "장건" || answerTxt === "한여진"){
@@ -822,12 +833,14 @@ function game(){
             }
         }
     });
+
+    
 }
 
 
 
 
-game();
+// game();
 const introPage = $("div.intro"),
       startBtn = $("button.start_btn");
 startBtn.click(()=>{
