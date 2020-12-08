@@ -1,3 +1,11 @@
+console.clear();
+const IS_TOUCH = 'ontouchstart' in window,
+      introPage = $("div.intro"),
+      startBtn = $("button.start_btn"),
+      pad_wrap = $("div.pad_wrap");
+
+console.log(IS_TOUCH);
+
 
 function game(){  
     const  answer = $("input.answer");
@@ -616,6 +624,7 @@ function game(){
     function Fail_Dead(){
         isFinal = true;
         isFailDead = true;
+        pad_wrap.removeClass("active");
     }
     function particle_start(){
         const particleGeo = new THREE.SphereGeometry(0.1, 10, 10);
@@ -637,11 +646,8 @@ function game(){
             $("div.Fianl_Group").children().eq(1).addClass("Final_Thank");
         }, 4000);
         setTimeout(()=>{
-            $("div.Fianl_Group").children().eq(2).css({"opacity" : 1});
-        }, 7600);
-        setTimeout(()=>{
-            location.reload();
-        }, 10000);
+            $("div.Fianl_Group").children().eq(2).css({"opacity" : 1, "point-event" : "all"});
+        }, 8000);
     }
     // POSTPROCESSING
     let composer;
@@ -772,6 +778,23 @@ function game(){
         composer.render();
     }
 
+    const upBtn = document.querySelector("button.upBtn"),
+          leftBtn = document.querySelector("button.leftBtn"),
+          downBtn = document.querySelector("button.downBtn"),
+          rightBtn = document.querySelector("button.rightBtn"),
+          runBtn = document.querySelector("button.runBtn");    
+
+    upBtn.addEventListener("touchstart", ()=>{w = true; });
+    leftBtn.addEventListener("touchstart", ()=>{a = true;});
+    downBtn.addEventListener("touchstart", ()=>{s = true;});
+    rightBtn.addEventListener("touchstart", ()=>{d = true;});
+    runBtn.addEventListener("touchstart", ()=>{run = true;});
+    upBtn.addEventListener("touchend", ()=>{w = false;});
+    leftBtn.addEventListener("touchend", ()=>{a = false;});
+    downBtn.addEventListener("touchend", ()=>{s = false;});
+    rightBtn.addEventListener("touchend", ()=>{d = false;});
+    runBtn.addEventListener("touchend", ()=>{run = false;});
+
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
     function onKeyDown(event) {
@@ -813,11 +836,14 @@ function game(){
     })
     answer.keyup(key => {
         if (key.keyCode == 13) {
-            if(answerTxt === "서동재" || answerTxt === "qwe" || answerTxt === "ㅂㅈㄷ"){
+            if(answerTxt === "서동재"){
+                pad_wrap.removeClass("active");
                 isSuccess = true;
                 isFinal = true;
             }else if(answerTxt === "황시목" || answerTxt === "이연재" || answerTxt === "이창준" || answerTxt === "장건" || answerTxt === "한여진"){
                 isFinal = true;
+                pad_wrap.removeClass("active");
+                answer.css({"opacity" : 0, "pointer-events" : "none"});
                 $("div.Fail_Catch").addClass("finalTxt");
                 setTimeout(()=>{
                     location.reload();
@@ -841,10 +867,13 @@ function game(){
 
 
 // game();
-const introPage = $("div.intro"),
-      startBtn = $("button.start_btn");
+
 startBtn.click(()=>{
     introPage.css({"opacity" : 0, "pointer-events" : "none"})
-    // game();
+    if(IS_TOUCH){
+        console.log(123);
+        pad_wrap.addClass("active");
+    }
+    game();
 });
 
