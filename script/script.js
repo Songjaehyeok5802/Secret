@@ -39,7 +39,7 @@ function game(){
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     //CAMERA--------
-    camera.position.set(0, 12, 8);
+    camera.position.set(0, 12, 8);  // 0, 12, 8
     camera.lookAt(0, 0, 0);  
 
 
@@ -669,6 +669,7 @@ function game(){
     //RENDER-------------------------------------------------------------------------------
     const renderScene = new function renderScene() {
         requestAnimationFrame(renderScene);
+
         if(!isFinal){
             if(!answerFocus){
                 keyEvent();
