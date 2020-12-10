@@ -56,6 +56,10 @@ function game(){
     heroLight.shadow.mapSize.height = 9000;
     scene.add( heroLight );
 
+    var heroLight_2 = new THREE.PointLight( 0xffffff, 1.5, 20, 0.8, 1, 0);
+    heroLight_2.position.set( 0, 0, 1);
+    scene.add( heroLight_2 );
+
     var lampLight = new THREE.SpotLight( 0xff0000, 0, 20, 0.8, 1, 0);
     lampLight.position.set( 0, 4, 0);
     lampLight.castShadow = true;  
@@ -79,9 +83,9 @@ function game(){
     heroHead.position.set(0, 0.5, 0);
     heroHead.castShadow = true;
     heroHead.receiveShadow = true;
-    scene.add(heroHead);
+    // scene.add(heroHead);
 
-    const heroBodyGeo = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
+    const heroBodyGeo = new THREE.CylinderBufferGeometry(0.2, 0.5, 2, 20);
     const heroBody = new Physijs.BoxMesh(heroBodyGeo, whiteMat);
     heroBody.castShadow = true;
     heroBody.receiveShadow = true;
@@ -172,7 +176,35 @@ function game(){
     scene.add(deadLight);
 
 
+
+
     // mtl 포함 obj----------------------------------------------------
+
+    function player(){
+        var pro_mtl =  new THREE.MTLLoader(),
+        mtl_Src = "../fbx/Player.mtl";
+        player_3D = new THREE.Object3D;
+
+        pro_mtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../fbx/Player.obj', 
+            function (object) {
+                player_3D = object;
+                player_3D.castShadow = true;
+                player_3D.receiveShadow = true;
+                player_3D.scale.set(0.8, 0.8, 0.8);
+                player_3D.position.set(0, -1, 0);
+                heroBody.add(player_3D);
+            })
+        });
+    }
+    player();
+
     function prosecution(){
         var pro_mtl =  new THREE.MTLLoader(),
         mtl_Src = "../fbx/prosecution.mtl";
@@ -194,8 +226,8 @@ function game(){
                 pro_3D.position.set(16, -2, 0);
                 pro_3D.rotation.set(0, Math.PI / 2 * -1, 0);
                 scene.add(pro_3D);
-        })
-    });
+            })
+        });
     }
 
     function police(){
@@ -465,6 +497,10 @@ function game(){
         count_pol = false,
         count_pro = false,
         count_han = false,
+        carTxt = false,
+        npcTxt_1 = false,
+        npcTxt_2 = false,
+        npcTxt_3 = false,
         isFailDead = false,
         isFailCatch = false,
         isSuccess = false,
@@ -476,6 +512,13 @@ function game(){
         par_y = [],
         par_z = [],
         particle_Time = false;
+
+        
+    const evidence = $("div.evidence"),
+          evidence_cast = $("ul.evidence_cast"),
+          npcTxt = $("ul.npcTxt");
+
+    
 
     function keyEvent(){
         if(!run){
@@ -499,13 +542,15 @@ function game(){
             heroBody.position.x += speed; 
             heroBody.__dirtyPosition = true; 
         }
-        heroHead.position.x = heroBody.position.x;
-        heroHead.position.z = heroBody.position.z;
-        heroHead.position.y = heroBody.position.y + 1.2;
+        // heroHead.position.x = heroBody.position.x;
+        // heroHead.position.z = heroBody.position.z;
+        // heroHead.position.y = heroBody.position.y + 1.2;
         camera.position.z = heroBody.position.z + 8;
         camera.position.x = heroBody.position.x;
         heroLight.position.z = heroBody.position.z + 1;
         heroLight.position.x = heroBody.position.x + 1;
+        heroLight_2.position.z = heroBody.position.z + 1;
+        heroLight_2.position.x = heroBody.position.x;
 
     };
     function set_2(){
@@ -569,6 +614,10 @@ function game(){
     function police_In(){
         if(heroBody.position.x > -18 && heroBody.position.x < -14 && heroBody.position.z < 2 && heroBody.position.z > -0.5){
             $("div.police").css("opacity", 1);
+            if(!count_pol){
+                evidence_cast.append("<li><img src='./Img/police/Han.jpg' alt='한여진 이미지'><span>한여진</span></li>");
+                evidence_cast.append("<li><img src='./Img/police/Jang.jpg' alt='장건 이미지'><span>장건</span></li>");
+            }
             count_pol = true;
         }else{
             $("div.police").css("opacity", 0);
@@ -577,6 +626,10 @@ function game(){
     function Prosecution_In(){
         if(heroBody.position.x > 14 && heroBody.position.x < 18 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
             $("div.Prosecution").css("opacity", 1);
+            if(!count_pro){
+                evidence_cast.append("<li><img src='./Img/Prosecution/Hwang.jpg' alt='황시목 이미지'><span>황시목</span></li>");
+                evidence_cast.append("<li><img src='./Img/Prosecution/Seo.jpg' alt='서동재 이미지'><span>서동재</span></li>");
+            }
             count_pro = true;
         }else{
             $("div.Prosecution").css("opacity", 0);
@@ -585,6 +638,10 @@ function game(){
     function hanzo_In(){
         if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 10 && heroBody.position.z > 8){
             $("div.hanzo").css("opacity", 1);
+            if(!count_han){
+                evidence_cast.append("<li><img src='./Img/hanzo/LeeCh.jpg' alt='이창준 이미지'><span>이창준</span></li>");
+                evidence_cast.append("<li><img src='./Img/hanzo/LeeYe.jpg' alt='이연재 이미지'><span>이연재</span></li>");
+            }
             count_han = true;
         }else{
             $("div.hanzo").css("opacity", 0);
@@ -593,6 +650,10 @@ function game(){
     function car_In(){
         if(heroBody.position.x > 9.5 && heroBody.position.x < 14 && heroBody.position.z < -10 && heroBody.position.z > -13){
             $("div.part_3_car").css("opacity", 1);
+            if(!carTxt){
+                npcTxt.append("<li> - 용의자의 옷은 어두운색이었다.</li>");
+            }
+            carTxt = true;
         }else{
             $("div.part_3_car").css("opacity", 0);
         }
@@ -600,6 +661,10 @@ function game(){
     function npc_In(){
         if(heroBody.position.x > -18 && heroBody.position.x < -16 && heroBody.position.z < -16 && heroBody.position.z > -17.5){
             $("div.part_3_npc").css("opacity", 1);
+            if(!npcTxt_1){
+                npcTxt.append("<li> - 그 사람이 통화하는 걸 들었는데 법을 잘 아는 것 같았어요.</li>");
+            }
+            npcTxt_1 = true;
         }else{
             $("div.part_3_npc").css("opacity", 0);
         }
@@ -607,6 +672,10 @@ function game(){
     function npc_2_In(){
         if(heroBody.position.x > -8 && heroBody.position.x < -6 && heroBody.position.z < 6 && heroBody.position.z > 4){
             $("div.part_3_npc_2").css("opacity", 1);
+            if(!npcTxt_2){
+                npcTxt.append("<li> - 안경을 썼던 것 같아요.</li>");
+            }
+            npcTxt_2 = true;
         }else{
             $("div.part_3_npc_2").css("opacity", 0);
         }
@@ -614,6 +683,10 @@ function game(){
     function npc_3_In(){
         if(heroBody.position.x > 12 && heroBody.position.x < 14 && heroBody.position.z < 10 && heroBody.position.z > 8){
             $("div.part_3_npc_3").css("opacity", 1);
+            if(!npcTxt_3){
+                npcTxt.append("<li> - 얼굴은 제대로 보이지 않았지만 주위는 밝았어요.</li>");
+            }
+            npcTxt_3 = true;
         }else{
             $("div.part_3_npc_3").css("opacity", 0);
         }
@@ -628,11 +701,13 @@ function game(){
     function prison_In(){
         if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5){
             $("div.part_3").css("opacity", 1);
+            evidence.css("opacity", 1);
             if(lampLight.intensity < 1){
                 lampLight.intensity += 0.1;
             }
         }else{
             $("div.part_3").css("opacity", 0);
+            evidence.css("opacity", 0);
             if(lampLight.intensity > 0){
                 lampLight.intensity -= 0.1;
             }
@@ -644,11 +719,13 @@ function game(){
     function prison_Answer_In(){
         if(heroBody.position.x > -1.5 && heroBody.position.x < 1.5 && heroBody.position.z < 1.5 && heroBody.position.z > -1.5 && !isFinal){
             answer.css({"opacity" : 1, "pointer-events" : "all"});
+            evidence.css("opacity", 1);
             if(lampLight.intensity < 1){
                 lampLight.intensity += 0.1;
             }
         }else{
             answer.css({"opacity" : 0, "pointer-events" : "none"});
+            evidence.css("opacity", 0);
             if(lampLight.intensity > 0){
                 lampLight.intensity -= 0.1;
             }
@@ -879,11 +956,13 @@ function game(){
         if (key.keyCode == 13) {
             if(answerTxt === "서동재"){
                 pad_wrap.removeClass("active");
+                evidence.css("opacity", 0);
                 isSuccess = true;
                 isFinal = true;
             }else if(answerTxt === "황시목" || answerTxt === "이연재" || answerTxt === "이창준" || answerTxt === "장건" || answerTxt === "한여진"){
                 isFinal = true;
                 pad_wrap.removeClass("active");
+                evidence.css("opacity", 0);
                 answer.css({"opacity" : 0, "pointer-events" : "none"});
                 $("div.Fail_Catch").addClass("finalTxt").css({"pointer-events" : "all"});
                 // setTimeout(()=>{
