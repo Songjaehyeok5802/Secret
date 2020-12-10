@@ -70,6 +70,7 @@ function game(){
     const whiteMat = new THREE.MeshStandardMaterial({color: 0xffffff});
     const redMat = new THREE.MeshStandardMaterial({color: 0xff6767});
     const orangeMat = new THREE.MeshStandardMaterial({color: 0xffc067});
+    const greenMat = new THREE.MeshStandardMaterial({color: 0x67ff9f});
     const greyMat = new THREE.MeshStandardMaterial({color: 0x7a7a7a});
 
     // Hero --------
@@ -92,14 +93,14 @@ function game(){
 
     // First Dead --------
     const DeadHeadGeo = new THREE.SphereGeometry(0.5, 15, 30);
-    const DeadHead = new THREE.Mesh(DeadHeadGeo, greyMat);
+    const DeadHead = new THREE.Mesh(DeadHeadGeo, redMat);
     DeadHead.position.set(1, -1.5, -4);
     DeadHead.castShadow = true;
     DeadHead.receiveShadow = true;
     scene.add(DeadHead);
 
     const DeadBodyGeo = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-    const DeadBody = new THREE.Mesh(DeadBodyGeo, greyMat);
+    const DeadBody = new THREE.Mesh(DeadBodyGeo, redMat);
     DeadBody.castShadow = true;
     DeadBody.receiveShadow = true;
     DeadBody.position.set(2, -1.5, -5);
@@ -108,14 +109,14 @@ function game(){
 
     // Second Dead --------
     const DeadHeadGeo2 = new THREE.SphereGeometry(0.5, 15, 30);
-    const DeadHead2 = new THREE.Mesh(DeadHeadGeo2, greyMat);
+    const DeadHead2 = new THREE.Mesh(DeadHeadGeo2, redMat);
     DeadHead2.position.set(-3, -1.5, -15);
     DeadHead2.castShadow = true;
     DeadHead2.receiveShadow = true;
     scene.add(DeadHead2);
 
     const DeadBodyGeo2 = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-    const DeadBody2 = new THREE.Mesh(DeadBodyGeo2, greyMat);
+    const DeadBody2 = new THREE.Mesh(DeadBodyGeo2, redMat);
     DeadBody2.castShadow = true;
     DeadBody2.receiveShadow = true;
     DeadBody2.position.set(-2, -1.5, -13);
@@ -139,12 +140,12 @@ function game(){
     soulLight_down.target = soul;
     scene.add(soulLight_down);
 
-    var soulLight_left = new THREE.SpotLight( 0xefff92, soulLight_inten, 1, 0.4, 1, 0);
+    var soulLight_left = new THREE.SpotLight( 0xa5d8ff, soulLight_inten, 1, 0.4, 1, 0);
     soulLight_left.position.set( 0, 1, -5);
     soulLight_left.target = soul;
     scene.add(soulLight_left);
 
-    var soulLight_right = new THREE.SpotLight( 0xfff9c0, soulLight_inten, 1, 0.4, 1, 0);
+    var soulLight_right = new THREE.SpotLight( 0xfff596, soulLight_inten, 1, 0.4, 1, 0);
     soulLight_right.position.set( 3, 1, -5);
     soulLight_right.target = soul;
     scene.add(soulLight_right);
@@ -302,7 +303,7 @@ function game(){
             z = -17;
 
         const npcGeo_hat_deco = new THREE.OctahedronGeometry(0.2,1);
-        const npcHat_Deco = new THREE.Mesh(npcGeo_hat_deco, redMat);
+        const npcHat_Deco = new THREE.Mesh(npcGeo_hat_deco, orangeMat);
         npcHat_Deco.position.set(x, 2, z);
         npcHat_Deco.castShadow = true;
         npcHat_Deco.receiveShadow = true;
@@ -367,6 +368,26 @@ function game(){
         npcBody.position.set(x, -1, z);
         scene.add(npcBody);
     }
+
+    function npc_4(){
+        let x = 14.5,
+            z = -26.5;
+
+        const npcGeo = new THREE.SphereGeometry(0.5, 30, 30);
+        const npcHead = new THREE.Mesh(npcGeo, greenMat);
+        npcHead.position.set(x, 0, z);
+        npcHead.castShadow = true;
+        npcHead.receiveShadow = true;
+        scene.add(npcHead);
+
+        const npcGeo_body = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
+        const npcBody = new THREE.Mesh(npcGeo_body, greenMat);
+        npcBody.castShadow = true;
+        npcBody.receiveShadow = true;
+        npcBody.position.set(x, -1, z);
+        scene.add(npcBody);
+    }
+   
 
     function lamp(){
         var lamp_mtl =  new THREE.MTLLoader(),
@@ -525,6 +546,7 @@ function game(){
             npc();
             npc_2();
             npc_3();
+            npc_4();
             create = false;
             set3 = true;
         }
@@ -584,6 +606,13 @@ function game(){
             $("div.part_3_npc_3").css("opacity", 1);
         }else{
             $("div.part_3_npc_3").css("opacity", 0);
+        }
+    }
+    function npc_4_In(){
+        if(heroBody.position.x > 13 && heroBody.position.x < 16 && heroBody.position.z < -25 && heroBody.position.z > -27.5){
+            $("div.part_3_npc_4").css({"opacity": 1, "pointer-events" : "all"});
+        }else{
+            $("div.part_3_npc_4").css({"opacity": 0, "pointer-events" : "none"});
         }
     }
     function prison_In(){
@@ -646,7 +675,7 @@ function game(){
             $("div.Fianl_Group").children().eq(1).addClass("Final_Thank");
         }, 4000);
         setTimeout(()=>{
-            $("div.Fianl_Group").children().eq(2).css({"opacity" : 1, "point-event" : "all"});
+            $("div.Fianl_Group").children().eq(2).css({"opacity" : 1, "pointer-events" : "all"});
         }, 8000);
     }
     // POSTPROCESSING
@@ -685,6 +714,7 @@ function game(){
                 npc_In();
                 npc_2_In();
                 npc_3_In();
+                npc_4_In();
                 if(count_pol && count_pro && count_han){
                     prison_Answer_In();
                 }else{
@@ -693,10 +723,10 @@ function game(){
             }
             anwerTyp();
         }else if(isFailDead){
-            $("div.Fail_Dead").addClass("finalTxt");
-            setTimeout(()=>{
-                location.reload();
-            }, 6000)
+            $("div.Fail_Dead").addClass("finalTxt").css({"pointer-events" : "all"});
+            // setTimeout(()=>{
+            //     location.reload();
+            // }, 6000)
         }else if(isSuccess){
             for(let i = 0 ; i < particle_group.length ; i++){
                 particle_group[i].position.x += par_x[i];
@@ -845,10 +875,10 @@ function game(){
                 isFinal = true;
                 pad_wrap.removeClass("active");
                 answer.css({"opacity" : 0, "pointer-events" : "none"});
-                $("div.Fail_Catch").addClass("finalTxt");
-                setTimeout(()=>{
-                    location.reload();
-                }, 6000)
+                $("div.Fail_Catch").addClass("finalTxt").css({"pointer-events" : "all"});
+                // setTimeout(()=>{
+                //     location.reload();
+                // }, 6000)
             }else{
                 if(answer.hasClass("wrong")===false){
                     answer.addClass("wrong");
@@ -867,7 +897,7 @@ function game(){
 
 
 
-// game();
+game();
 
 startBtn.click(()=>{
     introPage.css({"opacity" : 0, "pointer-events" : "none"})
