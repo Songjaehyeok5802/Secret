@@ -44,7 +44,7 @@ function game(){
 
 
     // Light --------
-    let hemiLight = new THREE.HemisphereLight( 0xEBF7FD, 0xEBF7FD, 0.2 );
+    let hemiLight = new THREE.HemisphereLight( 0xEBF7FD, 0xEBF7FD, 0.2);
     hemiLight.position.set( 0, 20, 20 );
     scene.add( hemiLight );
 
@@ -113,7 +113,7 @@ function game(){
     DeadHead2.position.set(-3, -1.5, -15);
     DeadHead2.castShadow = true;
     DeadHead2.receiveShadow = true;
-    scene.add(DeadHead2);
+    // scene.add(DeadHead2);
 
     const DeadBodyGeo2 = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
     const DeadBody2 = new THREE.Mesh(DeadBodyGeo2, redMat);
@@ -121,7 +121,7 @@ function game(){
     DeadBody2.receiveShadow = true;
     DeadBody2.position.set(-2, -1.5, -13);
     DeadBody2.rotation.set(1.2, 0, 2);
-    scene.add(DeadBody2);
+    // scene.add(DeadBody2);
 
     const soulGeo = new THREE.OctahedronGeometry(0.5, 1);
     const soul = new THREE.Mesh(soulGeo, whiteMat);
@@ -439,7 +439,7 @@ function game(){
     const groundGeo3 = new THREE.PlaneGeometry(45, 45, 1, 1);
     const ground_3 = new Physijs.BoxMesh(groundGeo3, greyMat);
     ground_3.rotation.x += Math.PI / 2 * -1;
-    ground_3.position.set(0, -14, -8);
+    ground_3.position.set(0, -20, -8);
     ground_3.castShadow = true; 
     ground_3.receiveShadow = true;
     scene.add(ground_3);
@@ -460,6 +460,7 @@ function game(){
         speed, 
         run = false,
         create = true,
+        set2 = false,
         set3 = false,
         count_pol = false,
         count_pro = false,
@@ -521,18 +522,27 @@ function game(){
             ground_2.position.y += 0.1;
             ground_2.__dirtyPosition = true;
         }
+        if(ground_2.position.y > -2.0 && !set2){
+            scene.add(DeadHead2);
+            scene.add(DeadBody2);
+            set2 = true;
+        }
+
     }
     function set_3(){
         if(heroBody.position.x > -3.5 && heroBody.position.x < -1.2 && heroBody.position.z < -12.5 && heroBody.position.z > -15.5){
             $("div.part_2").css("opacity", 1);
             groundUp_3 = true;
-            building();
+            // building();
         }else{
             $("div.part_2").css("opacity", 0);
         }
         if(groundUp_3 && ground_3.position.y < -1.9){
             ground_3.position.y += 0.1;
             ground_3.__dirtyPosition = true;
+        }
+        if(ground_3.position.y > -1.9){
+            building();
         }
     }
     function building(){
