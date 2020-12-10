@@ -19,7 +19,7 @@ function game(){
     var scene = new Physijs.Scene;
     scene.setGravity(new THREE.Vector3(0, -10, 0));
 
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 20 );
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 100 );
     var renderer = new THREE.WebGLRenderer({ alpha: true });
     document.getElementById("threejs").appendChild(renderer.domElement);
     // control = new THREE.OrbitControls(camera, renderer.domElement);
@@ -897,7 +897,7 @@ function game(){
 
 
 
-game();
+// game();
 
 startBtn.click(()=>{
     introPage.css({"opacity" : 0, "pointer-events" : "none"})
