@@ -366,38 +366,54 @@ function game(){
         let x = -7,
             z = 5;
 
-        const npcGeo = new THREE.SphereGeometry(0.4, 30, 30);
-        const npcHead = new THREE.Mesh(npcGeo, whiteMat);
-        npcHead.position.set(x, 0, z);
-        npcHead.castShadow = true;
-        npcHead.receiveShadow = true;
-        scene.add(npcHead);
+        var choid_mtl =  new THREE.MTLLoader(),
+        mtl_Src = "../obj/child.mtl";
+        child_3D = new THREE.Object3D;
 
-        const npcGeo_body = new THREE.CylinderBufferGeometry(0.2, 0.5, 2, 20);
-        const npcBody = new THREE.Mesh(npcGeo_body, whiteMat);
-        npcBody.castShadow = true;
-        npcBody.receiveShadow = true;
-        npcBody.position.set(x, -1, z);
-        scene.add(npcBody);
+        choid_mtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../obj/child.obj', 
+            function (object) {
+                child_3D = object;
+                child_3D.castShadow = true;
+                child_3D.receiveShadow = true;
+                child_3D.scale.set(0.8, 0.8, 0.8);
+                child_3D.position.set(x, -2, z);
+                scene.add(child_3D);
+            })
+        });
     }
 
     function npc_3(){
         let x = 13,
             z = 9;
 
-        const npcGeo = new THREE.SphereGeometry(0.5, 30, 30);
-        const npcHead = new THREE.Mesh(npcGeo, whiteMat);
-        npcHead.position.set(x, 0, z);
-        npcHead.castShadow = true;
-        npcHead.receiveShadow = true;
-        scene.add(npcHead);
+        var head_mtl =  new THREE.MTLLoader(),
+        mtl_Src = "../obj/head.mtl";
+        head_3D = new THREE.Object3D;
 
-        const npcGeo_body = new THREE.CylinderBufferGeometry(0.25, 0.5, 2, 20);
-        const npcBody = new THREE.Mesh(npcGeo_body, whiteMat);
-        npcBody.castShadow = true;
-        npcBody.receiveShadow = true;
-        npcBody.position.set(x, -1, z);
-        scene.add(npcBody);
+        head_mtl.load(mtl_Src, function (materials){
+        materials.preload();
+
+        var testobj = new THREE.OBJLoader();
+
+        testobj.setMaterials(materials);
+        
+        testobj.load('../obj/head.obj', 
+            function (object) {
+                head_3D = object;
+                head_3D.castShadow = true;
+                head_3D.receiveShadow = true;
+                head_3D.scale.set(1, 1, 1);
+                head_3D.position.set(x, -2.5, z);
+                scene.add(head_3D);
+            })
+        });
     }
 
     function npc_4(){
@@ -418,7 +434,6 @@ function game(){
         npcBody.position.set(x, -1, z);
         scene.add(npcBody);
     }
-   
 
     function lamp(){
         var lamp_mtl =  new THREE.MTLLoader(),
