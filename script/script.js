@@ -12,7 +12,6 @@ function game(){
     let answerTxt = "";
     let answerFocus = false;
 
-
     Physijs.scripts.worker = '../vendor/physijs_worker.js';
     Physijs.scripts.ammo = '../vendor/ammo.js';
 
@@ -182,7 +181,7 @@ function game(){
 
     function player(){
         var pro_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/Player.mtl";
+        mtl_Src = "../obj/Player.mtl";
         player_3D = new THREE.Object3D;
 
         pro_mtl.load(mtl_Src, function (materials){
@@ -192,7 +191,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/Player.obj', 
+        testobj.load('../obj/Player.obj', 
             function (object) {
                 player_3D = object;
                 player_3D.castShadow = true;
@@ -207,7 +206,7 @@ function game(){
 
     function prosecution(){
         var pro_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/prosecution.mtl";
+        mtl_Src = "../obj/prosecution.mtl";
         pro_3D = new THREE.Object3D;
 
         pro_mtl.load(mtl_Src, function (materials){
@@ -217,7 +216,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/prosecution.obj', 
+        testobj.load('../obj/prosecution.obj', 
             function (object) {
                 pro_3D = object;
                 pro_3D.castShadow = true;
@@ -232,7 +231,7 @@ function game(){
 
     function police(){
         var police_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/police.mtl";
+        mtl_Src = "../obj/police.mtl";
         police_3D = new THREE.Object3D;
 
         police_mtl.load(mtl_Src, function (materials){
@@ -242,7 +241,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/police.obj', 
+        testobj.load('../obj/police.obj', 
             function (object) {
                 police_3D = object;
                 police_3D.castShadow = true;
@@ -257,7 +256,7 @@ function game(){
 
     function hanzo(){
         var han_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/hanzo.mtl";
+        mtl_Src = "../obj/hanzo.mtl";
         han_3D = new THREE.Object3D;
 
     han_mtl.load(mtl_Src, function (materials){
@@ -267,7 +266,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/hanzo.obj', 
+        testobj.load('../obj/hanzo.obj', 
             function (object) {
                 han_3D = object;
                 han_3D.castShadow = true;
@@ -282,7 +281,7 @@ function game(){
 
     function prison(){
         var pri_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/prison.mtl";
+        mtl_Src = "../obj/prison.mtl";
         pri_3D = new THREE.Object3D;
 
         pri_mtl.load(mtl_Src, function (materials){
@@ -292,7 +291,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/prison.obj', 
+        testobj.load('../obj/prison.obj', 
             function (object) {
                 pri_3D = object;
                 pri_3D.castShadow = true;
@@ -307,7 +306,7 @@ function game(){
 
     function car(){
         var car_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/car.mtl";
+        mtl_Src = "../obj/car.mtl";
         car_3D = new THREE.Object3D;
 
         car_mtl.load(mtl_Src, function (materials){
@@ -317,7 +316,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/car.obj', 
+        testobj.load('../obj/car.obj', 
             function (object) {
                 car_3D = object;
                 car_3D.castShadow = true;
@@ -423,7 +422,7 @@ function game(){
 
     function lamp(){
         var lamp_mtl =  new THREE.MTLLoader(),
-        mtl_Src = "../fbx/lamp.mtl";
+        mtl_Src = "../obj/lamp.mtl";
         lamp_3D = new THREE.Object3D;
 
         lamp_mtl.load(mtl_Src, function (materials){
@@ -433,7 +432,7 @@ function game(){
 
         testobj.setMaterials(materials);
         
-        testobj.load('../fbx/lamp.obj', 
+        testobj.load('../obj/lamp.obj', 
             function (object) {
                 lamp_3D = object;
                 lamp_3D.castShadow = true;
