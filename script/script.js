@@ -7,7 +7,7 @@ const IS_TOUCH = 'ontouchstart' in window,
 console.log(IS_TOUCH);
 
 
-function game(){  
+function visual(){  
     const  answer = $("input.answer");
     let answerTxt = "";
     let answerFocus = false;
@@ -849,16 +849,16 @@ function game(){
                 soulLight_left.intensity +=0.01;
                 soulLight_right.intensity +=0.01;
             }
-            soul.position.y += 0.015;
+            soul.position.y += 0.01;
             answer.css({"opacity" : 0, "pointer-events" : "none"});
             if(camera.position.x < 1.4){
-                camera.position.x += 0.1;
+                camera.position.x += 0.06;
             }
             if(camera.position.y > 2){
-                camera.position.y -= 0.1;
+                camera.position.y -= 0.06;
             }
             if(camera.position.z > -2.1){
-                camera.position.z -= 0.1;
+                camera.position.z -= 0.06;
             }
             if(lampLight.intensity < 0.1){
                 lampLight.intensity = 0
@@ -958,8 +958,7 @@ function game(){
         }else if (keyCode == 16) {
             run = false;
         } 
-    }; 
-
+    };
     answer.focus(()=>{
         answerFocus = true;
     })
@@ -979,9 +978,6 @@ function game(){
                 evidence.css("opacity", 0);
                 answer.css({"opacity" : 0, "pointer-events" : "none"});
                 $("div.Fail_Catch").addClass("finalTxt").css({"pointer-events" : "all"});
-                // setTimeout(()=>{
-                //     location.reload();
-                // }, 6000)
             }else{
                 if(answer.hasClass("wrong")===false){
                     answer.addClass("wrong");
@@ -993,21 +989,12 @@ function game(){
             }
         }
     });
-
-    
 }
-
-
-
-
-// game();
 
 startBtn.click(()=>{
     introPage.css({"opacity" : 0, "pointer-events" : "none"})
     if(IS_TOUCH){
-        console.log(123);
         pad_wrap.addClass("active");
     }
-    game();
+    visual();
 });
-
